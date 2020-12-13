@@ -41,6 +41,7 @@ This is also especially useful for locked down orgs that make use of [Chrome OS]
 - `127.0.0.1:4343`: Websocket server, used for communicating with victim Chrome instances to transfer HTTP requests for proxying and sending commands.
 - `127.0.0.1:8118`: Admin web panel for viewing victim Chrome instances and getting HTTP proxy credentials.
 
+**IMPORTANT**: If you are proxying through CursedChrome using **Firefox** please use [FoxyProxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/). The built-in proxy support for Firefox has bugs in its implementation of authenticated HTTP proxies which will drive you to madness.
 
 # Requirements
 
@@ -80,6 +81,8 @@ You will need to install this CA into your root store, the following are instruc
 * [Linux](https://thomas-leister.de/en/how-to-import-ca-root-certificate/)
 * [Firefox (any OS)](https://support.securly.com/hc/en-us/articles/360008547993-How-to-Install-Securly-s-SSL-Certificate-in-Firefox-on-Windows)
 
+**IMPORTANT**: If you are proxying through CursedChrome using **Firefox** please use [FoxyProxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/). The built-in proxy support for Firefox has bugs in its implementation of authenticated HTTP proxies which will drive you to madness.
+
 ## Setting Up the Example Chrome Extension Implant
 
 To install the example chrome extension implant, do the following:
@@ -93,6 +96,18 @@ To install the example chrome extension implant, do the following:
 *Note:* You can debug the implant by clicking on the `background page` link for the text `Inspect views background page` under the `CursedChrome Implant` extension.
 
 After you've install the extension it will show up on the admin control panel at `http://localhost:8118`.
+
+## *Required for some sites*: Sync Cookies from Remote Victim
+
+Some sites* require client-side (e.g. JavaScript utilized) cookies, for these sites you'll need to have the `cookies` permission in your implant's `manifest.json` in addition to the other required permissions.
+
+If you have this permission declared, you can then use the Firefox/Chrome extension found in the `cookie-sync-extension/` folder. Load it into your web browser, enter the web panel URL (usually `http://localhost:8118`) and your bot's username/password and click the `Sync Remote Implant Cookies` to load all of your victim's cookies locally.
+
+*How magical!*
+
+*Google Cloud Console is one of these sites - why Google? It's 2020!*
+
+![](./images/sync-cookie-extension.png)
 
 # Production/Operational Usage
 
@@ -109,6 +124,8 @@ The following [extension permissions](https://developer.chrome.com/extensions/ap
 	"<all_urls>"
 ]
 ```
+
+If you want to utilize the Cookie Sync extension to sync the remote browser's cookies with your own (required for some sites), ensure the permission `cookies` is also declared.
 
 This code contains comments on how to modify it for a production setup. Basically doing the following:
 
